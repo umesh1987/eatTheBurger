@@ -1,68 +1,50 @@
 // Make sure we wait to attach our handlers until the DOM is fully loaded.
 $(function() {
-    $("#eatButton").on("click", function(event) {
-        event.preventDefault();
-
+    $(".change-devour").on("click", function(event) {
         var id = $(this).data("id");
-        var newDevouredState = $(this).data("devoured");
+        var nowdevour = $(this).data("devour");
 
-        var nowDevouredState = {
-            devoured: newDevouredState
-        }
+        var nowdevourState = {
+            devoured: nowdevour
+        };
 
-        // Send the PUT request.
+
         $.ajax("/api/burgers/" + id, {
             type: "PUT",
-            data: nowDevouredState
+            data: nowdevourState
         }).then(
             function() {
-                console.log("burger devoured");
-                // Reload the page to get the updated list
+                console.log("changed devour to", nowdevour);
+                // Reload  page
                 location.reload();
             }
         );
     });
 
-
     $(".create-form").on("submit", function(event) {
-        // Make sure to preventDefault on a submit event.
         event.preventDefault();
 
         var newBurger = {
-            burger_name: $("#newBurger").val().trim(),
-
+            burger_name: $("#brgr").val().trim(),
         };
-
-        // Send the POST request.
         $.ajax("/api/burgers", {
             type: "POST",
-            data: newburger
+            data: newBurger
         }).then(
             function() {
-                console.log("add new burger");
-                // Reload the page to get the updated list
+                console.log("created the burger");
                 location.reload();
             }
         );
     });
-
-    // eat burger event and PUT request
-
-
-    $(".trashBurger").on("click", function(event) {
-        event.preventDefault();
-
+    $(".delete-burger").on("click", function(event) {
         var id = $(this).data("id");
 
-
-
-        // Send the DELETE request.
         $.ajax("/api/burgers/" + id, {
             type: "DELETE"
         }).then(
             function() {
-                console.log("deleted burger");
-                // Reload the page to get the updated list
+                console.log("deleted the burger", id);
                 location.reload();
             }
         );
